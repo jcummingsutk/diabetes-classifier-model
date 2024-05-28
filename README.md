@@ -1,0 +1,1 @@
+If you would like to train locally, then you'll have to download the data via python -m diabetes_model_code.download_blobs
