@@ -14,7 +14,8 @@ azure:
 
   CONDA_TRAINING_ENV_FILE: diabetes_model/conda_training.yaml
   TRAINING_BASE_IMAGE: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
-  NUM_HYPEROPT_EVALS: "100"
+  
+  NUM_HYPEROPT_EVALS: "1000"
   NUM_HYPEROPT_TRIALS_TO_LOG: "10"
 
 
