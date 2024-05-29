@@ -1,1 +1,2 @@
-If you would like to train locally, then you'll have to download the data via python -m diabetes_model_code.download_blobs
+If you would like to train locally, then you'll have to download the data via python -m diabetes_model.code.download_blobs
+Then you can train the model via python -m diabetes_model.code.train_model_script --data-source ./data --num-hyperopt-evals 5 --num-hyperopt-trials-to-log 2
