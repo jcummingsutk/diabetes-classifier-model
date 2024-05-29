@@ -20,11 +20,7 @@ def is_environ_updated(ml_client: MLClient) -> bool:
         return False
     with open(os.environ["CONDA_TRAINING_ENV_FILE"], "r") as f:
         local_conda_dict = yaml.safe_load(f)
-    local_conda_dict
-    local_base_image = os.environ["TRAINING_BASE_IMAGE"]
     if local_conda_dict != env.conda_file:
-        return False
-    if local_base_image != env.image:
         return False
     return True
 
