@@ -2,6 +2,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from functools import partial
 
+import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
 import pandas as pd
@@ -10,7 +11,7 @@ from hyperopt.pyll.base import scope
 from xgboost import XGBClassifier
 
 from .metrics import score_classifier
-from .visualizations import create_confusion_matrix_visual
+from .visualizations import create_classification_report_visual
 
 
 @dataclass
@@ -90,8 +91,6 @@ def hyperopt_optimize_function(
 
     avg_val_metrics = {key: np.mean(vals) for key, vals in eval_metrics_cv.items()}
 
-    # confusion_matrix = create_confusion_matrix_visual(clf, X_test, y_test)
-
     return {
         "loss": -np.mean(avg_val_metrics["f_score"]),
         "status": STATUS_OK,
@@ -102,7 +101,12 @@ def hyperopt_optimize_function(
     }
 
 
-def mlflow_log_best_trials(trials: Trials, num_trials_to_log: int = 5):
+def mlflow_log_best_trials(
+    trials: Trials,
+    X_test: pd.DataFrame,
+    y_test: pd.DataFrame,
+    num_trials_to_log: int = 5,
+):
     """From the hyperopt trials, logs the num_trials_to_log best models, ranked
     according to their losses
 
@@ -125,6 +129,14 @@ def mlflow_log_best_trials(trials: Trials, num_trials_to_log: int = 5):
 
             for param_name, param_value in params.items():
                 mlflow.log_param(key=param_name, value=param_value)
+            fig_classification_report = create_classification_report_visual(
+                clf, X_test, y_test
+            )
+            mlflow.log_figure(
+                figure=fig_classification_report,
+                artifact_file="classification_report.png",
+            )
+            plt.close("all")
             mlflow.xgboost.log_model(clf, "model")
 
 
@@ -180,6 +192,11 @@ def train_model(
         rstate=rstate,
     )
 
-    mlflow_log_best_trials(trials, num_hyperopt_trials_to_log)
+    mlflow_log_best_trials(
+        trials,
+        X_test,
+        y_test,
+        num_hyperopt_trials_to_log,
+    )
 
     return
