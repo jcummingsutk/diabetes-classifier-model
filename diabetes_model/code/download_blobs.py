@@ -2,7 +2,7 @@ import os
 
 from azure.storage.blob import BlobServiceClient
 
-from diabetes_model_code.config import load_env_vars
+from diabetes_model.config import load_env_vars
 
 if __name__ == "__main__":
     load_env_vars("config.yaml", "config_secret.yaml")

@@ -7,8 +7,10 @@ import numpy as np
 import pandas as pd
 from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
 from hyperopt.pyll.base import scope
-from metrics import score_classifier
 from xgboost import XGBClassifier
+
+from .metrics import score_classifier
+from .visualizations import create_confusion_matrix_visual
 
 
 @dataclass
@@ -87,6 +89,8 @@ def hyperopt_optimize_function(
     )
 
     avg_val_metrics = {key: np.mean(vals) for key, vals in eval_metrics_cv.items()}
+
+    # confusion_matrix = create_confusion_matrix_visual(clf, X_test, y_test)
 
     return {
         "loss": -np.mean(avg_val_metrics["f_score"]),

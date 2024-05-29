@@ -5,7 +5,8 @@ from argparse import Namespace
 import mlflow
 import pandas as pd
 import yaml
-from train_model import CrossValidationData, TrainTestData, train_model
+
+from .train_model import CrossValidationData, TrainTestData, train_model
 
 
 def parse_arguments() -> Namespace:
@@ -123,7 +124,6 @@ if __name__ == "__main__":
 
     with mlflow.start_run():
         mlflow.set_tag(key="isParentRun", value=1)
-        mlflow.log_metric("test", 1)
         train_model(
             train_test_data,
             cross_validation_data,

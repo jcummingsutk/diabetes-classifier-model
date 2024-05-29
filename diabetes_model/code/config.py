@@ -8,6 +8,7 @@ def load_env_vars(config_filename: str, config_secret_filename: str) -> dict[str
     with open(config_filename, "r") as f:
         config = yaml.safe_load(f)
     for key in config["azure"].keys():
+        print(key)
         os.environ[key] = config["azure"][key]
 
     if os.path.exists(config_secret_filename):
