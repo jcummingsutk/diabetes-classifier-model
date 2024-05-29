@@ -1,0 +1,24 @@
+trigger:
+- main
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- bash: echo "##vso[task.prependpath]$CONDA/bin"
+  displayName: Add conda to PATH
+
+- bash: |
+    conda env create --quiet --file conda.yaml
+  displayName: Create Anaconda environment
+
+- bash: |
+    source activate diabetes-classifier-data
+    dvc repro
+    python -m mtg_data_code.upload_data_to_blob_script
+  displayName: Upload Data
+  env:
+    BLOB_CONNECTION_STRING: $(BLOB_CONNECTION_STRING)
+    AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
