@@ -15,7 +15,7 @@ steps:
   displayName: Create Anaconda environment
 
 - bash: |
-    source activate diabetes-classifier-data
+    source activate diabetes-classifier-model
     python -m cicd.upload_and_run_training_script
   displayName: Upload Data
   env:
