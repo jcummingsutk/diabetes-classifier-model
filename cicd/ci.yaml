@@ -16,8 +16,7 @@ steps:
 
 - bash: |
     source activate diabetes-classifier-data
-    dvc repro
-    python -m mtg_data_code.upload_data_to_blob_script
+    python -m cicd.upload_and_run_training_script
   displayName: Upload Data
   env:
     BLOB_CONNECTION_STRING: $(BLOB_CONNECTION_STRING)
