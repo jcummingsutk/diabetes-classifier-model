@@ -45,7 +45,7 @@ def hyperopt_optimize_function(
     X_test: pd.DataFrame,
     y_test: pd.Series,
 ) -> dict[str, any]:
-    eval_metrics_cv: dict[str, any] = defaultdict(lambda: [])
+    val_metrics_cv: dict[str, any] = defaultdict(lambda: [])
     for X_train_cv, y_train_cv, X_val_cv, y_val_cv in zip(
         X_train_list_cv, y_train_list_cv, X_val_list_cv, y_val_list_cv
     ):
@@ -69,7 +69,7 @@ def hyperopt_optimize_function(
         )
 
         for metric_name, metric_val in eval_metrics.items():
-            eval_metrics_cv[metric_name].append(metric_val)
+            val_metrics_cv[metric_name].append(metric_val)
     clf = XGBClassifier(
         **space,
         early_stopping_rounds=20,
@@ -89,7 +89,7 @@ def hyperopt_optimize_function(
         beta=beta,
     )
 
-    avg_val_metrics = {key: np.mean(vals) for key, vals in eval_metrics_cv.items()}
+    avg_val_metrics = {key: np.mean(vals) for key, vals in val_metrics_cv.items()}
 
     return {
         "loss": -np.mean(avg_val_metrics["f_score"]),
