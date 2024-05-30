@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import mlflow
 import numpy as np
 import pandas as pd
-from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
-from hyperopt.pyll.base import scope
+from hyperopt import STATUS_OK, Trials, fmin, tpe
 from xgboost import XGBClassifier
 
+from .hyperparameters import SPACE
 from .metrics import score_classifier
 from .visualizations import create_classification_report_visual
 
@@ -146,16 +146,7 @@ def train_model(
     num_hyperopt_evals: int,
     num_hyperopt_trials_to_log: int,
 ):
-    space = {
-        "eta": hp.uniform("eta", 0, 1.0),
-        "max_depth": scope.int(hp.quniform("max_depth", 2, 20, 1)),
-        "subsample": hp.uniform("subsample", 0, 1),
-        "colsample_bytree": hp.uniform("colsample_bytree", 0, 1),
-        "n_estimators": scope.int(hp.quniform("n_estimators", 20, 5000, 25)),
-        "gamma": hp.uniform("gamma", 0, 0.3),
-        "min_child_weight": hp.uniform("min_child_weight", 0, 1),
-        "nthread": 4,
-    }
+    space = SPACE
 
     X_train_upsample_cv_list = cross_validation_data.X_train_upsample_cv_list
     y_train_upsample_cv_list = cross_validation_data.y_train_upsample_cv_list
