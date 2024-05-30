@@ -1,0 +1,3 @@
+model_name: diabetes-classifier-model
+version: 3
+download_path: notebooks/downloaded_model

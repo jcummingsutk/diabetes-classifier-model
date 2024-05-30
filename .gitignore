@@ -163,3 +163,4 @@ config_secret.yaml
 data/
 mlruns
 local_notebooks
+downloaded_model
